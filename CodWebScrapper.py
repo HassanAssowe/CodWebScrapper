@@ -7,6 +7,9 @@ from tempfile import mkstemp
 from shutil import move, copymode
 from os import fdopen, remove, getcwd
 
+import re
+
+
 
 
 
@@ -48,12 +51,13 @@ def uniqid(prefix = '', more_entropy=False):
 
 #_________________________________________________________________________________________________________________
 
+
 def generateId(): #Generates a unique ID and MD5 Hashes it.
     deviceId = uniqid()
     result = hashlib.md5(deviceId.encode())
     return result.hexdigest() 
 
-def authenticate(email, password): #Retrieves session headers, (authheader and DeviceID) used to sign in)
+def authenticate(email, password): #Retrieves session headers, (authheader and DeviceID) used to sign in
     deviceId = generateId()
     data = json.dumps({'deviceId': deviceId}, separators=(',', ':'))
     res = postReq("https://profile.callofduty.com/cod/mapp/registerDevice", data)
@@ -64,18 +68,21 @@ def authenticate(email, password): #Retrieves session headers, (authheader and D
     session_requests.headers.update({ 'Authorization': 'bearer %s' % authHeader, 'x_cod_device_id': deviceId })
     login(email, password)
 
-def login(email, password): #Logs into https://profile.callofduty.com/ with credentials. Allowing for stat requests.
+def login(email, password): #Logs into https://profile.callofduty.com/ with credentials. Allowing for requests.
     data = json.dumps({ "email": email, "password": password }, separators=(',', ':'))
     res = postReq("https://profile.callofduty.com/cod/mapp/login", data)
     output = res.content.decode()
     json_obj = json.loads(output)
-    if json_obj["success"] != True: return print("Could not Login.")
+    if json_obj["success"] != True: return print("Could not Login. Or Credentials are incorrect.")
     session_requests.cookies.update({
         'rtkn': json_obj["rtkn"],
         'ACT_SSO_COOKIE': json_obj["s_ACT_SSO_COOKIE"],
         'atkn': json_obj["atkn"]
     })
-    getLatestMatch("Raj752%231280", "battle")
+
+    user = input("Enter Battle.Net Account (I.E. John%12345): ")
+    user = user.split('%')[0] + '%23' + user.split('%')[1] #All 'battle' requests need to have 23 before accountID.
+    getLatestMatch(user, "battle") #An Example request.
 
 
 
@@ -86,10 +93,14 @@ def login(email, password): #Logs into https://profile.callofduty.com/ with cred
 
 
 def getLatestMatch(gamertag, platform): #Retrieves latest game played from user.
-    result = getReq('{}/crm/cod/v2/title/mw/platform/{}/gamer/{}/matches/mp/start/0/end/0/'.format(defaultUri, platform, gamertag))
-    #result = getReq('{}/stats/cod/v1/title/mw/platform/{}/gamer/{}/profile/type/mp'.format(defaultUri, platform, gamertag))
-    #result = getReq('{}/crm/cod/v2/title/mw/platform/{}/gamer/{}/matches/mp/start/0/end/0/details'.format(defaultUri, platform, gamertag))
-    JSON = json.loads(result.content.decode())
+    try:
+        result = getReq('{}/crm/cod/v2/title/mw/platform/{}/gamer/{}/matches/mp/start/0/end/0/'.format(defaultUri, platform, gamertag))
+        #result = getReq('{}/stats/cod/v1/title/mw/platform/{}/gamer/{}/profile/type/mp'.format(defaultUri, platform, gamertag))
+        #result = getReq('{}/crm/cod/v2/title/mw/platform/{}/gamer/{}/matches/mp/start/0/end/0/details'.format(defaultUri, platform, gamertag))
+        JSON = json.loads(result.content.decode())
+    except:
+        print("An Error has occured.")
+        
     for items in JSON["data"]:
         print('MatchID: {} \nTimestamp: {}\nMap: {}\nGamemode: {} \n'.format(items.get('matchId'), items.get('timestamp'), items.get('map'), items.get('type')))
         timestamp_start = items.get('timestamp')
@@ -104,38 +115,43 @@ def getLatestMatchStats(gamertag,platform,timestamp): #Retrieves match stats fro
     JSON = json.loads(result.content.decode())
     stat = JSON["data"]["summary"]["all"]
     print('Player ID: {}\nkills: {}\ndeaths: {}\nkdRatio: {}\nscore: {}\nscorePerMinute: {}\n'.format(gamertag,stat.get('kills'),stat.get('deaths'),stat.get('kdRatio'),stat.get('score'),stat.get('scorePerMinute')))
-    #print(JSON["data"]["summary"]) #Use This for JSON of All Possible stats.
+    #print(JSON["data"]["summary"]) Use This for JSON of All Possible stats.
 
 
 def dataStorage(gamertag, timestamp): #Stores latest timestamp of searched user in a .dat file.
     file_path = 'Player_Data.dat'
     fh, abs_path = mkstemp()
-    with fdopen(fh,'r+') as new_file:
-        with open(file_path) as old_file:
-            for line in old_file:
-                if(gamertag in line):
-                    print("User Found, Updating Data")
-                    new_file.write(line.replace(line.split("\t")[1], str(timestamp) + "\n"))
-                elif(gamertag not in line):
-                    new_file.write(line)
-                elif(gamertag not in line and os.getsize(file_path) == 0):
-                    print("User Not Found, Adding Data")
-                    new_file.write('{}\t{}\n'.format(gamertag,timestamp))
-            
-    copymode(file_path, abs_path)
-    remove(file_path)
-    move(abs_path, file_path)
+    
+    try:
+        with fdopen(fh,'r+') as new_file:
+            with open(file_path) as old_file:
+                for line in old_file:
+                    if(gamertag in line):
+                        print("User Found, Updating Data")
+                        new_file.write(line.replace(line.split("\t")[1], str(timestamp) + "\n"))
+                    elif(gamertag not in line):
+                        new_file.write(line)
+                    elif(gamertag not in line and os.getsize(file_path) == 0):
+                        print("User Not Found, Adding Data")
+                        new_file.write('{}\t{}\n'.format(gamertag,timestamp))
+                
+        copymode(file_path, abs_path)
+        remove(file_path)
+        move(abs_path, file_path)
+    except:
+        print("An Error has occured")
 
     
     
 
-def getReq(url): #getRequest
+def getReq(url): #getRequests
     result = session_requests.get(url)
     return result
 
-def postReq(url, data): #postRequest
+def postReq(url, data): #postRequests
     result = session_requests.post(url, data = data)
     return result
+
 
 # TERMINAL COMMANDS--------------------------------------------------------------------------------------------------
 
