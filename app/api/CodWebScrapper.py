@@ -68,7 +68,8 @@ def authenticate(
         'Authorization': 'bearer %s' % authHeader,
         'x_cod_device_id': deviceId
     })
-    login(email, password)
+    status = login(email, password)
+    return status
 
 
 def login(
@@ -83,7 +84,9 @@ def login(
     output = res.content.decode()
     json_obj = json.loads(output)
     if json_obj["success"] != True:
-        return print("Could not Login. Or Credentials are incorrect.")
+        return "Fail"       
+    else:
+        return "Success" 
     session_requests.cookies.update({
         'rtkn':
         json_obj["rtkn"],
