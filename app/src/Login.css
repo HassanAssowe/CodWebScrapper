@@ -1,7 +1,20 @@
+
+@media all and (min-width: 480px) {
+    .Login {
+        padding: 60px 0;
+    }
+
+    .Login form {
+        margin: 0 auto;
+        max-width: 320px;
+    }
+}
+
 body {
   font: 13px/20px "Lucida Grande", Tahoma, Verdana, sans-serif;
   color: #404040;
-  background: black;
+  /* background: black; */
+  background-image: url("./images/background.jpg");
 }
 
 .login {
