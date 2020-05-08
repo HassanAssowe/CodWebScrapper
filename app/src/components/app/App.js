@@ -5,6 +5,7 @@ import './App.css';
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [state, setState] =useState("");
 
   function validateForm() {
     return email.length > 0 && password.length > 0;
@@ -12,11 +13,9 @@ function Login() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    const response = ""
     fetch('/login?email='+ email+'&password='+password)
     .then(res => res.json())
-    .then(data => {console.log(data)}
-    )
+    .then(data => {setState(data)})
   }
   return (
     <div className="login">
@@ -42,7 +41,9 @@ function Login() {
           Login
         </Button>
       </form>
+      {state === "Fail" && <p id="loginError">Wrong Credentials</p>}
     </div>
   )
 }
+
 export default Login;
