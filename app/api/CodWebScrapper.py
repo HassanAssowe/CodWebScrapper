@@ -123,7 +123,7 @@ def getLatestMatch(gamertag,
             items.get('type')))
         timestamp_start = items.get('timestamp')
         break
-
+    return(JSON["data"])
     dataStorage(gamertag, timestamp_start)
     getLatestMatchStats(gamertag, "battle", timestamp_start)
 

@@ -17,6 +17,7 @@ class UserInfo extends React.Component {
     }
     handleUsername(event) {
         event.preventDefault();
+        console.log(this.state.username)
         fetch('/user?username=' + this.state.username)
             .then(res => res.json())
             .then(data => { console.log(data) })
@@ -28,6 +29,7 @@ class UserInfo extends React.Component {
                     <FormGroup controlId="username">
                         <FormControl
                             autoFocus
+                            type="text"
                             placeholder="Enter Username"
                             value={this.state.username}
                             onChange={e => this.setState({ username: e.target.value })}

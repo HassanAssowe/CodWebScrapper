@@ -28,7 +28,7 @@ class Login extends React.Component {
 
   render() {
     if (this.state.loginStatus === "Success"){
-      return <Redirect to="/userInfo" />
+      return (<Redirect to="/UserInfo" />)
     }
     return (
       <div className="login">
