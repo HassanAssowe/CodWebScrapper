@@ -15,4 +15,4 @@ CodWebScrapper is a tool to retreive and analyze Call of Duty player stats
   * Type `yarn start` in the terminal to start the `React` frontend
   * This will open the browser to `http://localhost:3000/` where the app will run.
 
-![Home Screen]('./githubResources/Capture.jpg' "Home Screen")
+![Home Screen]('./githubResources/Capture.png' "Home Screen")
