@@ -19,7 +19,7 @@ def login():
 def userInfo():
     username = request.args['username']
     response = cod.getLatestMatch(username, "battle")
-    return jsonify(response)
+    return response
 
 
 if __name__ == '__main__':
