@@ -1,0 +1,89 @@
+MISC
+----------------------
+arena | true or false, for gun game?
+privatematch | true or false for private matches
+duration	| duration of match 
+wlratio
+winningTeam "axis" or "allies" 
+gameBattlefalse | false or true
+team1Score
+team2Score
+map
+dom
+matchID
+playlistName
+gameType
+result
+winningTeam
+utcStartSeconds
+utcEndSeconds
+
+KILLSTREAKUSAGE
+----------------------
+radar_drone_overwatch
+uav
+
+PLAYERSTATS
+----------------------
+kills
+medalXp
+matchXp
+averageSpeedDuringMatch
+scoreXp
+accuracy
+shotsLanded
+score
+totalXp
+headshots
+assists
+rank
+scorePerMinute
+distanceTraveled
+deaths
+kdRatio
+shotsMissed
+timePlayed
+executions
+suicides
+percentTimeMoving
+miscXp
+objectiveUavAssist
+longestStreak
+damageDone
+shotsFired
+damageTaken
+timePlayed
+
+objectivePlant	#S&D
+objectiveLastManKill	#S&D
+objectiveMedalModeSdDefuseScore | I think this is for defuses #S&D
+objectiveMedalModeXDefendScore	#S&D
+
+objectiveDestroyedEquipment 			
+
+objectiveCaptureKill					#DOMINATION
+objectiveDestroyedEquipment 			#DOMINATION
+objectiveMedalModeDomSecureNeutralScore	#DOMINATION
+objectiveMedalModeDomSecureAssistScore	#DOMINATION
+
+objectiveMedalModeDomSecureAScore		#DOMINATION		*may count amount of captures per flag.
+objectiveMedalModeDomSecureBScore		#DOMINATION
+objectiveMedalModeDomSecureCScore		#DOMINATION
+objectiveObjProgDefend					#???
+
+objectiveKillConfirmed					#KILLCONFIRMED
+objectiveKcFriendlyPickup				#KILLCONFIRMED
+objectiveKillDenied						#KILLCONFIRMED
+
+
+WEAPONSTATS
+----------------------
+#List stats per weapon | example ID: iw8_ar_mike4
+hits
+kills
+headshots
+loadoutIndex
+shots
+startingWeaponXp
+deaths
+xpEarned
