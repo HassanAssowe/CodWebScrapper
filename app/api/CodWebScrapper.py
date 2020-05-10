@@ -1,13 +1,10 @@
 import requests
 import time, math, random
 import hashlib, json
-from lxml import html
 
 from tempfile import mkstemp
 from shutil import move, copymode
-from os import fdopen, remove, getcwd
-
-import re
+from os import fdopen, remove
 
 #TODO Generate a random ID and MD5 Hash it, package I use in nodejs is uniqid and then cryptoJS to hash it.
 #TODO Make POST request to https://profile.callofduty.com/cod/mapp/registerDevice with said device ID
@@ -72,7 +69,7 @@ def authenticate(
         'x_cod_device_id': deviceId
     })
     status = login(email, password)
-    return (status)
+    return status
 
 
 def login(

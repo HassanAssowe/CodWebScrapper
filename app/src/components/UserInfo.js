@@ -18,14 +18,14 @@ class UserInfo extends React.Component {
     handleUsername(event) {
         event.preventDefault();
         console.log(this.state.username)
-        fetch('/user?username=' + this.state.username)
+        fetch('/user?username=' + encodeURIComponent(this.state.username))
             .then(res => res.json())
             .then(data => { console.log(data) })
     }
     render() {
         return (
             <div className="user-info">
-                <form onSumbit={this.handleUsername}>
+                <form onSubmit={this.handleUsername}>
                     <FormGroup controlId="username">
                         <FormControl
                             autoFocus

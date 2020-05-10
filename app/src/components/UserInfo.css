@@ -1,15 +1,3 @@
-@media all and (min-width: 480px) {
-    .user-info{
-        padding: 60px 0;
-    }
-  
-    .user-info form {
-        margin: 0 auto;
-        max-width: 320px;
-    }
-  }
-  
-
 body {
     font: 13px/20px "Lucida Grande", Tahoma, Verdana, sans-serif;
     color: #404040;

@@ -1,9 +1,7 @@
 from flask import Flask, render_template, request, jsonify
-
-# import webbrowser
-# import threading
-
 import CodWebScrapper as cod
+import urllib.parse
+
 app = Flask(__name__)
 
 
@@ -17,9 +15,11 @@ def login():
 
 @app.route('/user', methods=['GET'])
 def userInfo():
-    username = request.args['username']
+    username = urllib.parse.unquote(request.args['username'])
     response = cod.getLatestMatch(username, "battle")
-    return response
+    print (username)
+    print(response)
+    return jsonify(response)
 
 
 if __name__ == '__main__':
