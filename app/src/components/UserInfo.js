@@ -1,6 +1,6 @@
 import React from 'react';
 import './UserInfo.css';
-import { Button, FormGroup, FormControl } from "react-bootstrap";
+import { Button, FormGroup, FormControl, Navbar, Nav } from "react-bootstrap";
 
 class UserInfo extends React.Component {
     constructor(props) {
@@ -25,22 +25,23 @@ class UserInfo extends React.Component {
     }
     render() {
         return (
-            <div className="user-info">
-                <form onSubmit={this.handleUsername}>
-                    <FormGroup controlId="username">
-                        <FormControl
-                            autoFocus
-                            type="text"
-                            placeholder="Enter Username"
-                            value={this.state.username}
-                            onChange={e => this.setState({ username: e.target.value })}
-                        />
-                    </FormGroup>
-                    <Button block disabled={!this.validateUser()} type="submit">
-                        Submit
-                    </Button>
-                </form>
-            </div>
+            <Navbar className="bg-light" expand="lg">
+                <Nav className="mr-auto">
+                    <Nav.Link href="/">Home</Nav.Link>
+                    <form onSubmit={this.handleUsername}>
+                        <FormGroup controlId="username">
+                            <FormControl
+                                autoFocus
+                                type="text"
+                                placeholder="Enter Username"
+                                value={this.state.username}
+                                onChange={e => this.setState({ username: e.target.value })}
+                            />
+                        </FormGroup>
+                        <Button type="submit">Submit</Button>
+                    </form>
+                </Nav>
+            </Navbar>
         )
     }
 }

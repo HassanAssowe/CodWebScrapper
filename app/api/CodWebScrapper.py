@@ -190,3 +190,14 @@ def postReq(url, data):  #postRequests
 #email = input("Enter a https://my.callofduty.com email: ")
 #password = input("Enter Password: ")
 #authenticate(email, password)
+
+def getPlayerInfo(gamertag,platform):
+    try:
+        result = getReq(
+            '{}/stats/cod/v1/title/mw/platform/{}/gamer/{}/profile/type/mp'
+            .format(defaultUri, platform, gamertag))
+        rawPayload = json.loads(result.content.decode())
+        print (rawPayload['data'])
+        return rawPayload 
+    except:
+        print("An Error has occured.")

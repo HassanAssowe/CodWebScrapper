@@ -16,8 +16,7 @@ def login():
 @app.route('/user', methods=['GET'])
 def userInfo():
     username = urllib.parse.unquote(request.args['username'])
-    response = cod.getLatestMatch(urllib.parse.quote(username), "battle")
-    #response = cod.getLatestMatch('RandAIThor%231857', "battle")
+    response = cod.getPlayerInfo(urllib.parse.quote(username), "battle")
     return jsonify(response)
 
 
