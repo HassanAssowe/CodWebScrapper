@@ -1,6 +1,7 @@
 import requests
 import time, math, random
 import hashlib, json
+import urllib.parse
 
 from tempfile import mkstemp
 from shutil import move, copymode
@@ -127,7 +128,8 @@ def getLatestMatch(gamertag,
         break
 
     dataStorage(gamertag, timestamp_start)
-    return (getLatestMatchStats(gamertag, "battle", timestamp_start))
+    return(JSON)
+    #return (getLatestMatchStats(gamertag, "battle", timestamp_start))
 
 
 def getLatestMatchStats(gamertag, platform,

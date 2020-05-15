@@ -17,6 +17,7 @@ class UserInfo extends React.Component {
     }
     handleUsername(event) {
         event.preventDefault();
+        // console.log(encodeURIComponent(this.state.username))
         console.log(this.state.username)
         fetch('/user?username=' + encodeURIComponent(this.state.username))
             .then(res => res.json())
