@@ -197,7 +197,6 @@ def getPlayerInfo(gamertag,platform):
             '{}/stats/cod/v1/title/mw/platform/{}/gamer/{}/profile/type/mp'
             .format(defaultUri, platform, gamertag))
         rawPayload = json.loads(result.content.decode())
-        print (rawPayload['data'])
         return rawPayload 
     except:
         print("An Error has occured.")

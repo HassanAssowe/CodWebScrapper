@@ -1,6 +1,12 @@
 body {
     font: 13px/20px "Lucida Grande", Tahoma, Verdana, sans-serif;
-    color: #404040;
-    background-image: url("../assets/images/background.jpg");
+    color: white;
+    background-color: black;
     }
 
+.user-info h1{
+    font-size: 25px;
+    color: white;
+    text-align: center;
+    padding-top: 10px;
+}

@@ -1,12 +1,16 @@
 import React from 'react';
 import './UserInfo.css';
-import { Button, FormGroup, FormControl, Navbar, Nav } from "react-bootstrap";
+import { Button, Form, FormControl, Navbar } from "react-bootstrap";
 
 class UserInfo extends React.Component {
     constructor(props) {
         super(props)
+        this.givenUsername=""
+        this.playerLevel=0
         this.state = {
             username: '',
+            isUserGiven: false,
+            userData: [],
         }
         this.validateUser = this.validateUser.bind(this)
         this.handleUsername = this.handleUsername.bind(this)
@@ -18,31 +22,37 @@ class UserInfo extends React.Component {
     handleUsername(event) {
         event.preventDefault();
         // console.log(encodeURIComponent(this.state.username))
-        console.log(this.state.username)
+        this.givenUsername = this.state.username
         fetch('/user?username=' + encodeURIComponent(this.state.username))
             .then(res => res.json())
-            .then(data => { console.log(data) })
+            .then(data => this.setState({userData: data}))
+        this.setState({isUserGiven : true})
+        this.state.userData.map(result => {this.playerLevel=result.data.level})
     }
     render() {
         return (
-            <Navbar className="bg-light" expand="lg">
-                <Nav className="mr-auto">
-                    <Nav.Link href="/">Home</Nav.Link>
-                    <form onSubmit={this.handleUsername}>
-                        <FormGroup controlId="username">
-                            <FormControl
-                                autoFocus
-                                type="text"
-                                placeholder="Enter Username"
-                                value={this.state.username}
-                                onChange={e => this.setState({ username: e.target.value })}
-                            />
-                        </FormGroup>
-                        <Button type="submit">Submit</Button>
-                    </form>
-                </Nav>
-            </Navbar>
-        )
+            <div>
+                <Navbar className="bg-light justify-content-between" >
+                    <Navbar.Brand href="/">Home</Navbar.Brand>
+                    <Form inline onSubmit={this.handleUsername}>
+                        <FormControl
+                            type="text"
+                            placeholder="Enter Username"
+                            autoFocus
+                            value={this.state.username}
+                            onChange={e => this.setState({ username: e.target.value })}
+                            className="mr sm-2"
+                        />
+                        <Button type="Submit">Submit</Button>
+                    </Form>
+                </Navbar>
+                {this.state.isUserGiven && 
+                <div className = "user-info">
+                    <h1>{this.givenUsername}</h1>
+                    <p>{this.playerLevel}</p>
+                </div>}
+            </div>
+          )
     }
 }
 
