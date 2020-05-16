@@ -5,15 +5,15 @@ import { Button, Form, FormControl, Navbar } from "react-bootstrap";
 class UserInfo extends React.Component {
     constructor(props) {
         super(props)
-        this.givenUsername=""
-        this.playerLevel=0
+        this.givenUsername = ""
         this.state = {
+            data: {},
             username: '',
-            isUserGiven: false,
-            userData: [],
+            isLoaded: false,
         }
         this.validateUser = this.validateUser.bind(this)
         this.handleUsername = this.handleUsername.bind(this)
+        this.loadData = this.loadData.bind(this)
     }
 
     validateUser() {
@@ -21,13 +21,20 @@ class UserInfo extends React.Component {
     }
     handleUsername(event) {
         event.preventDefault();
-        // console.log(encodeURIComponent(this.state.username))
         this.givenUsername = this.state.username
         fetch('/user?username=' + encodeURIComponent(this.state.username))
             .then(res => res.json())
-            .then(data => this.setState({userData: data}))
-        this.setState({isUserGiven : true})
-        this.state.userData.map(result => {this.playerLevel=result.data.level})
+            .then(data => this.setState({ data: JSON.parse(data)},this.loadData))
+    }
+    loadData() {
+        if (this.state.data.status === 'Success') {
+            console.log("Setting state to loaded")
+            this.setState({ isLoaded: true })
+        }
+        else {
+            console.log("Setting state to NOT loaded")
+            this.setState({ isLoaded: false })
+        }
     }
     render() {
         return (
@@ -46,13 +53,16 @@ class UserInfo extends React.Component {
                         <Button type="Submit">Submit</Button>
                     </Form>
                 </Navbar>
-                {this.state.isUserGiven && 
-                <div className = "user-info">
-                    <h1>{this.givenUsername}</h1>
-                    <p>{this.playerLevel}</p>
-                </div>}
+                {this.state.isLoaded &&
+                    <div className="user-info">
+                        {/* need to add a delay */}
+                        <h1>{this.givenUsername}</h1>
+                        <p>Level: {this.state.data.level}</p>
+                        <p>KDR: {this.state.data.killDeathRatio}</p>
+                        <p>SPM: {this.state.data.scorePerMinute}</p>
+                    </div>}
             </div>
-          )
+        )
     }
 }
 

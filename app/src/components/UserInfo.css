@@ -10,3 +10,9 @@ body {
     text-align: center;
     padding-top: 10px;
 }
+
+.user-info p{
+    font-size: 20px;
+    color: white;
+    text-align: center;
+}

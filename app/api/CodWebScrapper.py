@@ -197,6 +197,15 @@ def getPlayerInfo(gamertag,platform):
             '{}/stats/cod/v1/title/mw/platform/{}/gamer/{}/profile/type/mp'
             .format(defaultUri, platform, gamertag))
         rawPayload = json.loads(result.content.decode())
-        return rawPayload 
+        payload = {'status': 'Success',
+                    'level': str(int(rawPayload["data"]["level"])),
+                    'scorePerMinute': str(round(float(rawPayload["data"]["lifetime"]["all"]["properties"]["scorePerMinute"]),2)),
+                    'killDeathRatio': str(round(float(rawPayload["data"]["lifetime"]["all"]["properties"]["kdRatio"]),2))}
+        print ("Sending user data")
+        print(type(json.dumps(payload)))
+        return json.dumps(payload) 
+        #return rawPayload
     except:
         print("An Error has occured.")
+        payload = {'status': 'Error'}
+        return json.dumps(payload)
