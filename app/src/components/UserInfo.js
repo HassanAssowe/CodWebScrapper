@@ -1,6 +1,6 @@
 import React from 'react';
 import './UserInfo.css';
-import { Button, Form, FormControl, Navbar } from "react-bootstrap";
+import { Button, Form, FormControl, Navbar, Table, Container, Col } from "react-bootstrap";
 
 class UserInfo extends React.Component {
     constructor(props) {
@@ -24,7 +24,7 @@ class UserInfo extends React.Component {
         this.givenUsername = this.state.username
         fetch('/user?username=' + encodeURIComponent(this.state.username))
             .then(res => res.json())
-            .then(data => this.setState({ data: JSON.parse(data)},this.loadData))
+            .then(data => this.setState({ data: JSON.parse(data) }, this.loadData))
     }
     loadData() {
         if (this.state.data.status === 'Success') {
@@ -50,16 +50,34 @@ class UserInfo extends React.Component {
                             onChange={e => this.setState({ username: e.target.value })}
                             className="mr sm-2"
                         />
-                        <Button type="Submit">Submit</Button>
+                        <Button type="Submit">Fetch Stats</Button>
                     </Form>
                 </Navbar>
                 {this.state.isLoaded &&
                     <div className="user-info">
                         {/* need to add a delay */}
                         <h1>{this.givenUsername}</h1>
-                        <p>Level: {this.state.data.level}</p>
-                        <p>KDR: {this.state.data.killDeathRatio}</p>
-                        <p>SPM: {this.state.data.scorePerMinute}</p>
+                        <Container>
+                            <Col>
+                                <Table bordered size="sm" variant="dark">
+                                    <tbody>
+                                        <tr>
+                                            <td>Level: </td>
+                                            <td>{this.state.data.level}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>KDR: </td>
+                                            <td>{this.state.data.killDeathRatio}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>SPM: </td>
+                                            <td>{this.state.data.scorePerMinute}</td>
+                                        </tr>
+                                    </tbody>
+                                </Table>
+                            </Col>
+                        </Container>
+
                     </div>}
             </div>
         )
